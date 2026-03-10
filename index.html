@@ -10,114 +10,138 @@
         background: #ffe6f0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         height: 100vh;
         overflow: hidden;
         margin: 0;
-    }
-
-    h1 {
-        font-size: 2.5em;
-        color: #ff3399;
-        margin-bottom: 50px;
+        padding: 20px;
         text-align: center;
     }
 
-    #yes {
+    h1 {
+        font-size: 2em;
+        color: #ff3399;
+        margin-bottom: 40px;
+    }
+    
+    #yes, #no {
         font-size: 1.5em;
-        padding: 15px 40px;
+        padding: 12px 30px;
         border: none;
         border-radius: 12px;
         cursor: pointer;
-        background-color: #ff66b2;
-        color: white;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         transition: all 0.3s ease;
-        position: relative; /* stay centered */
+    }
+
+    #yes {
+        background-color: #ff66b2;
+        color: white;
+        position: absolute;
         z-index: 1;
     }
 
     #no {
-        font-size: 1.5em;
-        padding: 15px 40px;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
         background-color: #ffcccc;
         color: #990000;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        transition: all 0.2s ease;
-        position: absolute; /* dodge freely */
+        position: absolute;
     }
 
     .emoji {
         font-size: 2.5em;
-        margin: 10px;
+        margin: 5px;
         animation: float 3s ease-in-out infinite;
     }
 
     @keyframes float {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
+        50% { transform: translateY(-10px); }
         100% { transform: translateY(0px); }
     }
 
     #message {
-        font-size: 2em;
+        font-size: 1.8em;
         color: #ff3399;
         margin-top: 30px;
         display: none;
-        text-align: center;
         max-width: 90%;
+        word-wrap: break-word;
     }
 
+    @media (max-width: 500px) {
+        h1 {
+            font-size: 1.8em;
+        }
+        #yes, #no {
+            font-size: 1.2em;
+            padding: 10px 25px;
+        }
+        .emoji {
+            font-size: 2em;
+        }
+        #message {
+            font-size: 1.5em;
+        }
+    }
 </style>
 </head>
 <body>
-    <h1>Will You Be My Girlfriend?</h1>
+<h1>Will You Be My Girlfriend?</h1>
 
-    <button id="yes">Yes 💖</button>
-    <button id="no">No 😅</button>
+<button id="yes">Yes 💖</button>
+<button id="no">No 😅</button>
 
-    <!-- Floating emojis -->
-    <div>
-        <span class="emoji">❤️</span>
-        <span class="emoji">💌</span>
-        <span class="emoji">😍</span>
-        <span class="emoji">🥰</span>
-        <span class="emoji">💫</span>
-    </div>
+<div>
+    <span class="emoji">❤️</span>
+    <span class="emoji">💌</span>
+    <span class="emoji">😍</span>
+    <span class="emoji">🥰</span>
+    <span class="emoji">💫</span>
+</div>
 
-    <div id="message">Yay! 💖 I’m so happy! Can’t wait for all the adventures with you! 😍🥰</div>
+<div id="message">Yay! 💖 I’m so happy! Can’t wait for all the adventures with you! 😍🥰</div>
 
-    <script>
-        const noBtn = document.getElementById('no');
-        const yesBtn = document.getElementById('yes');
-        const message = document.getElementById('message');
+<script>
+const yesBtn = document.getElementById('yes');
+const noBtn = document.getElementById('no');
+const message = document.getElementById('message');
 
-        // Place the No button initially near the Yes button
-        noBtn.style.left = (window.innerWidth / 2 + 150) + 'px';
-        noBtn.style.top = (window.innerHeight / 2 - 25) + 'px';
+function positionButtons() {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
-        // Dodge effect
-        noBtn.addEventListener('mouseover', () => {
-            const bodyWidth = window.innerWidth - noBtn.offsetWidth;
-            const bodyHeight = window.innerHeight - noBtn.offsetHeight;
+    const spacing = 200; 
 
-            const randomX = Math.floor(Math.random() * bodyWidth);
-            const randomY = Math.floor(Math.random() * bodyHeight);
+    yesBtn.style.left = (centerX - spacing / 2 - yesBtn.offsetWidth / 2) + 'px';
+    yesBtn.style.top = centerY + 'px';
 
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-        });
+    noBtn.style.left = (centerX + spacing / 2 - noBtn.offsetWidth / 2) + 'px';
+    noBtn.style.top = centerY + 'px';
+}
 
-        // Yes click
-        yesBtn.addEventListener('click', () => {
-            message.style.display = 'block';
-            message.scrollIntoView({behavior: "smooth"});
-            console.log("User clicked YES! 💖");
-        });
-    </script>
+positionButtons();
+
+window.addEventListener('resize', () => {
+    positionButtons();
+});
+    
+noBtn.addEventListener('mouseover', () => {
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    noBtn.style.left = randomX + 'px';
+    noBtn.style.top = randomY + 'px';
+});
+
+yesBtn.addEventListener('click', () => {
+    message.style.display = 'block';
+    message.scrollIntoView({behavior: "smooth"});
+    console.log("User clicked YES! 💖");
+});
+</script>
 </body>
 </html>
